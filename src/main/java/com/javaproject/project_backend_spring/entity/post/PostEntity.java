@@ -7,6 +7,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UuidGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaproject.project_backend_spring.entity.CourtEntity;
 
 import jakarta.persistence.CascadeType;
@@ -67,26 +68,15 @@ public class PostEntity {
   @Column()
   private Date updateAt;
 
-  @Column()
-  private Date deleteAt;
-
   @ManyToOne
   @JoinColumn(name = "courtId", nullable = false)
   private CourtEntity court;
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
   private List<PostLevelEntity> postLevels;
 
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
   private List<PostUserEntity> postUsers;
-
-  // @ManyToOne
-  // @JoinColumn(name = "courtId", nullable = false)
-  // private String court;
-
-  // @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval =true)
-  // private List<PostUserEntity> postUsers;
-
-  // @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval =true)
-  // private List<LevelCourtEntity> levelCourts;
 }

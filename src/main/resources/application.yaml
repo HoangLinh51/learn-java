@@ -4,8 +4,8 @@ server:
 spring:
   application:  
     name: project-backend-spring
-  profiles:
-    active: dev
+  # profiles:
+  #   active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5342/bad_core

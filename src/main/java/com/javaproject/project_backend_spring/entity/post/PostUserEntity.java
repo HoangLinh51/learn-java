@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UuidGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaproject.project_backend_spring.entity.UserEntity;
 
 import jakarta.persistence.Column;
@@ -32,23 +33,18 @@ public class PostUserEntity {
   @Column()
   private boolean isHost;
 
+  @ManyToOne
+  @JoinColumn(name = "userId", nullable = false)
+  private UserEntity user;
+
+  @ManyToOne
+  @JoinColumn(name = "postId", nullable = false)
+  @JsonIgnore
+  private PostEntity post;
+
   @Column()
   private Date createAt;
 
   @Column()
   private Date updateAt;
-
-  @Column()
-  private Date deleteAt;
-
-  @Column()
-  private boolean isDelete;
-
-  @ManyToOne
-  @JoinColumn(name = "postId", nullable = false)
-  private PostEntity post;
-
-  @ManyToOne
-  @JoinColumn(name = "userId", nullable = false)
-  private UserEntity user;
 }

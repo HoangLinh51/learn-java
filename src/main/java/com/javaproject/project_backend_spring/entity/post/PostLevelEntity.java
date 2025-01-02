@@ -6,6 +6,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.UuidGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.javaproject.project_backend_spring.entity.LevelEntity;
 
 import jakarta.persistence.Column;
@@ -35,6 +36,7 @@ public class PostLevelEntity {
 
   @ManyToOne
   @JoinColumn(name = "postId", nullable = false)
+  @JsonIgnore
   private PostEntity post;
 
   @Column()
@@ -42,7 +44,4 @@ public class PostLevelEntity {
 
   @Column()
   private Date updateAt;
-
-  @Column()
-  private Date deleteAt;
 }
