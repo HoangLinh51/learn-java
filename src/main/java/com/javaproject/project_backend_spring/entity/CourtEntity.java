@@ -12,11 +12,13 @@ import com.javaproject.project_backend_spring.entity.post.PostEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -48,6 +50,7 @@ public class CourtEntity {
   @Column()
   private Date deleteAt;
 
-  @OneToMany(mappedBy = "court", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "court", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ToString.Exclude
   private List<PostEntity> posts;
 }

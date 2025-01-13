@@ -11,11 +11,13 @@ import com.javaproject.project_backend_spring.entity.post.PostLevelEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Entity
@@ -31,6 +33,7 @@ public class LevelEntity {
   @Column()
   private String label;
 
-  @OneToMany(mappedBy = "level", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "level", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @ToString.Exclude
   private List<PostLevelEntity> postLevels;
 }

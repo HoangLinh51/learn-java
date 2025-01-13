@@ -1,4 +1,4 @@
-package com.javaproject.project_backend_spring.dto;
+package com.javaproject.project_backend_spring.dto.request;
 
 import java.util.List;
 

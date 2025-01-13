@@ -3,15 +3,19 @@ package com.javaproject.project_backend_spring.service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.javaproject.project_backend_spring.dto.PostDto;
+import com.javaproject.project_backend_spring.dto.request.PostDto;
+import com.javaproject.project_backend_spring.dto.response.LevelDto;
+import com.javaproject.project_backend_spring.dto.response.PostResponseDto;
 import com.javaproject.project_backend_spring.entity.UserEntity;
 import com.javaproject.project_backend_spring.entity.post.PostEntity;
 import com.javaproject.project_backend_spring.entity.post.PostLevelEntity;
+import com.javaproject.project_backend_spring.entity.post.PostStatus;
 import com.javaproject.project_backend_spring.entity.post.PostUserEntity;
 import com.javaproject.project_backend_spring.repository.PostRepository;
 import com.javaproject.project_backend_spring.repository.UserRepository;
@@ -24,6 +28,38 @@ public class PostService {
 
   @Autowired
   private UserRepository userRepository;
+  
+  public List<PostResponseDto> getAllPosts() {
+    return postRepository.findAll().stream()
+        .map(this::convertToDto)
+        .collect(Collectors.toList());
+  }
+
+  public Optional<PostResponseDto> getPostById(String postId) {
+    return postRepository.findById(postId).map(this::convertToDto);
+  }
+
+  private PostResponseDto convertToDto(PostEntity postEntity) {
+    PostResponseDto dto = new PostResponseDto();
+    dto.setId(postEntity.getId());
+    dto.setCourtName(postEntity.getCourt().getName());
+    dto.setCourtAddress(postEntity.getCourt().getAddress());
+    dto.setDate(postEntity.getDate());
+    dto.setStartTime(postEntity.getStartTime());
+    dto.setEndTime(postEntity.getEndTime());
+    dto.setNumberOfCourt(postEntity.getNumberOfCourt());
+    dto.setSlot(postEntity.getSlot());
+    dto.setPrice(postEntity.getPrice());
+    dto.setLevel( postEntity.getPostLevels().parallelStream().map(level -> {
+      LevelDto levelDto = new LevelDto();
+      levelDto.setId(level.getLevel().getId());
+      levelDto.setLabel(level.getLevel().getLabel());
+      return levelDto;
+    }).collect(Collectors.toList()));
+    dto.setStatus(postEntity.getStatus());
+    dto.setDelete(postEntity.isDelete());
+    return dto;
+  }
 
   public PostEntity createPost(PostDto dataPostDto) {
     System.out.println("PostDto: " + dataPostDto);
@@ -40,6 +76,7 @@ public class PostService {
       postEntity.setNumberOfCourt(dataPostDto.getNumberOfCourt());
       postEntity.setPrice(dataPostDto.getPrice());
       postEntity.setDelete(false);
+      postEntity.setStatus(PostStatus.ACTIVE);
       postEntity.setCreateAt(new Date());
       postEntity.setUpdateAt(new Date());
 
